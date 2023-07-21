@@ -1,6 +1,8 @@
 const canvas = document.getElementById("mainCanvas");
 const ctx = canvas.getContext("2d");
 
+let drawingPoints = [];
+
 function clearCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -17,7 +19,7 @@ function circle(x, y, r, color, opacity) {
     ctx.fill();
 }
 
-function arrow(x, y, length, lineWidth, rotation, color) {
+function arrow(x, y, length, lineWidth, rotation, color, isDrawing) {
     ctx.globalAlpha = 1.0;
     ctx.save();
 
@@ -29,6 +31,10 @@ function arrow(x, y, length, lineWidth, rotation, color) {
 
     const arrowheadWidth = 10;
     const arrowheadLength = 20;
+
+    if(isDrawing) {
+        drawingPoints.push([(rotation * Math.PI) / 180], length, x, y);
+    }
 
     // Draw the arrow
     ctx.beginPath();
