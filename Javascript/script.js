@@ -2,39 +2,35 @@ clearCanvas();
 arrow(500, 500, 100, 20, 0, "lightgray");
 circle(500, 500, 10, "black", 0.3);
 
-function rotatePoint(x, angleInDegrees) {
-    const angleInRadians = (angleInDegrees * Math.PI) / 180;
-    const cosValue = Math.cos(angleInRadians);
-    const sinValue = Math.sin(angleInRadians);
-
-    const newX = x * cosValue;
-    const newY = x * sinValue;
-
-    return [newX,newY];
-}
-
 let degreesRotated = 0;
 
-let arrows = [[200, 0, 1],
-              [50, 180, -1]];
+let squareLength = 50*(1-Math.sqrt(2)/2);
+
+let arrows = [[50, 0, 1],
+              [squareLength, 180, -3],
+              [100, 0, 1]];
 
 function infiniteLoop() {
-    let degreesRotated2 = 0;
-    let length2 = 500;
+    let length2 = 0;
+    let xPoint = 0;
+    let yPoint = 0;
     clearCanvas();
-    for(i in arrows) {
-        if(i==0) {
-            arrow(500, 500, arrows[i][0], 20, degreesRotated*arrows[i][2], "lightgray", true);
+    for(i in points) {
+        circle(points[i][0], points[i][1], 10, "black", 1.0);
+    }
+    for(j in arrows) {
+        if(j==0) {
+            arrow(500, 500, arrows[j][0], 20, degreesRotated*arrows[j][2], "lightgray", false);
         } else {
-            arrow(rotatePoint(length2, degreesRotated2)[0], rotatePoint(length2, degreesRotated2)[1], arrows[i][0], 20, degreesRotated*arrows[i][2], "lightgray", !(i==arrows.length-1));
+            arrow(xPoint+500, yPoint+500, arrows[j][0], 20, degreesRotated*arrows[j][2]+arrows[j][1], "lightgray", j==arrows.length-1&&degreesRotated<=360);
         }
-        degreesRotated2 += degreesRotated*arrows[i][2];
-        length2 += arrows[i][0];
+        xPoint += rotatePoints(arrows[j][0], 0, degreesRotated*arrows[j][2]+arrows[j][1])[0];
+        yPoint += rotatePoints(arrows[j][0], 0, degreesRotated*arrows[j][2]+arrows[j][1])[1];
+        length2 += arrows[j][0];
         circle(500, 500, 10, "black", 0.3);
     }
     degreesRotated++;
     setTimeout(infiniteLoop, 20);
   }
   
-
   infiniteLoop();
